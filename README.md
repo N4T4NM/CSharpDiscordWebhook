@@ -26,7 +26,7 @@ hook.Hook(message);
 DiscordEmbed embed = new DiscordEmbed(Avatar:"avatar-url", Username:"hook username");
 embed.SetTitle("...");
 embed.SetMessage("...");
-embed.SetColor(Color.Red);
+embed.SetColor(0xf54242); //red
 embed.SetImage("image-url");
 embed.SetFooter("footer-text", "footer-image-url");
 hook.Hook(embed);
