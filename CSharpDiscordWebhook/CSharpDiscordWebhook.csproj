@@ -36,6 +36,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,14 +47,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Discord\DiscordWebhook.cs" />
-    <Compile Include="Discord\HookMessage\DiscordEmbed.cs" />
-    <Compile Include="Discord\HookMessage\DiscordFile.cs" />
-    <Compile Include="Discord\HookMessage\DiscordMessage.cs" />
-    <Compile Include="Discord\WebhookObject.cs" />
+    <Compile Include="Discord\HookRequest\DiscordEmbed.cs" />
+    <Compile Include="Discord\HookRequest\DiscordHook.cs" />
+    <Compile Include="Discord\HookRequest\DiscordHookBuilder.cs" />
+    <Compile Include="Discord\Utils\DiscordConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
