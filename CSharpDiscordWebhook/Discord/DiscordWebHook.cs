@@ -1,23 +1,22 @@
-﻿using System.Net;
+﻿using Discord.Webhook.HookRequest;
+using System.Net;
 
 namespace Discord.Webhook
 {
-    class DiscordWebhook
+    public class DiscordWebhook
     {
         public string HookUrl { get; set; }
-        WebClient client;
 
         public DiscordWebhook()
         {
-            client = new WebClient();
+            
         }
 
-        public void Hook(WebhookObject HookObject)
+        public void Hook(DiscordHook HookRequest)
         {
-            client.Encoding = HookObject.DataEncoding;
-            client.Headers.Add("Content-Type", HookObject.ContentType);
-            byte[] request = client.Encoding.GetBytes(HookObject.GetHook());
-            client.UploadData(HookUrl, "POST", request);
+            WebClient client = new WebClient();
+            client.Headers.Add("Content-Type", $"multipart/form-data; boundary={HookRequest.Boundary}");
+            client.UploadData(HookUrl, HookRequest.Body.ToArray());
         }
     }
 }
