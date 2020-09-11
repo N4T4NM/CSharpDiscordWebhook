@@ -23,6 +23,10 @@ builder.Message = "Message Content";
 //set file to upload
 builder.FileUpload = new FileInfo("./file-location);
 
+//create embed fields
+DiscordEmbedField[] fields = new[] {
+  new DiscordEmbedField(Name:"Field Name", Value:"Field Value", Line:true)
+}
 //add embed
 DiscordEmbed embed = new DiscordEmbed(
                 Title: "Embed Title",
@@ -30,7 +34,8 @@ DiscordEmbed embed = new DiscordEmbed(
                 Color: 0xf54242, /*Set embed color to red*/
                 ImageUrl: "Image Url", 
                 FooterText: "Footer content",
-                FooterIconUrl: "Footer Image Url");
+                FooterIconUrl: "Footer Image Url",
+                Fields: fields);
 builder.Embeds.Add(embed);
 ```
 
