@@ -21,7 +21,7 @@ DiscordHoolBuilder builder = DiscordHookBuilder.Create(Nickname: "Nickname", Ava
 //set message
 builder.Message = "Message Content";
 //set file to upload
-builder.FileUpload = new FileInfo("./file-location);
+builder.FileUpload = new FileInfo("./file-location");
 
 //create embed fields
 DiscordEmbedField[] fields = new[] {
