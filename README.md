@@ -5,42 +5,50 @@ Simple C# written code to send messages embeds and files using discord webhooks
 **Code usage**
 > Importing webhook code
 ```CSharp
+using Discord;
 using Discord.Webhook;
-using Discord.Webhook.HookRequest;
 ```
 > Creating webhook
 ```CSharp
 DiscordWebhook hook = new DiscordWebhook();
-hook.HookUrl = "https://discordapp.com/hook-url";
+hook.Url = "https://discordapp.com/hook-url";
 ```
 
 > Creating message
 ```CSharp
-//create builder
-DiscordHoolBuilder builder = DiscordHookBuilder.Create(Nickname: "Nickname", AvatarUrl: "http://url-to-image/image");
-//set message
-builder.Message = "Message Content";
-//set file to upload
-builder.FileUpload = new FileInfo("./file-location");
+DiscordMessage message = new DiscordMessage();
+message.Content = "Example message, ping @everyone, <@userid>";
+message.TTS = true; //read message to everyone on the channel
+message.Username = "Webhook username";
+message.AvatarUrl = "http://url-of-image";
 
-//create embed fields
-DiscordEmbedField[] fields = new[] {
-  new DiscordEmbedField(Name:"Field Name", Value:"Field Value", Line:true)
-}
-//add embed
-DiscordEmbed embed = new DiscordEmbed(
-                Title: "Embed Title",
-                Description: "Embed Description",
-                Color: 0xf54242, /*Set embed color to red*/
-                ImageUrl: "Image Url", 
-                FooterText: "Footer content",
-                FooterIconUrl: "Footer Image Url",
-                Fields: fields);
-builder.Embeds.Add(embed);
+//embeds
+DiscordEmbed embed = new DiscordEmbed();
+embed.Title = "Embed title";
+embed.Description = "Embed description";
+embed.Url = "Embed Url";
+embed.Timestamp = DateTime.Now;
+embed.Color = Color.Red; //alpha will be ignored, you can use any RGB color
+embed.Footer = new EmbedFooter() {Text="Footer Text", IconUrl="http://url-of-image"};
+embed.Image = new EmbedMedia() {Url="Media URL", Width=150, Height=150}; //valid for thumb and video
+embed.Provider = new EmbedProvider() {Name="Provider Name", Url="Provider Url"};
+embed.Author = new EmbedAuthor() {Name="Author Name", Url="Author Url", IconUrl="http://url-of-image"};
+
+//fields
+embed.Fields = new[]{ 
+  new EmbedField() {Name="Field Name", Value="Field Value", InLine=true },
+  new EmbedField() {Name="Field Name 2", Value="Field Value 2", InLine=true }};
+
+//set embed
+message.Embeds = new[]{embed};
 ```
 
 > Sending message
 ```CSharp
-DiscordHook HookMessage = builder.Build();
-hook.Hook(HookMessage);
+
+//message
+hook.Send(message);
+
+//file
+hook.Send(message, new FileInfo("C:/File/Path.file"));
 ```
