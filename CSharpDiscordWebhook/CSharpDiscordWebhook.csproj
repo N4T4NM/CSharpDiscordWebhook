@@ -47,11 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Discord\DiscordWebhook.cs" />
-    <Compile Include="Discord\HookRequest\DiscordEmbed.cs" />
-    <Compile Include="Discord\HookRequest\DiscordEmbedField.cs" />
-    <Compile Include="Discord\HookRequest\DiscordHook.cs" />
-    <Compile Include="Discord\HookRequest\DiscordHookBuilder.cs" />
-    <Compile Include="Discord\Utils\DiscordConverter.cs" />
+    <Compile Include="Discord\Structs.cs" />
+    <Compile Include="Discord\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
