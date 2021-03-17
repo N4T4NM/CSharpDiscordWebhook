@@ -61,42 +61,42 @@ namespace Discord
         /// <summary>
         /// Embed timestamp
         /// </summary>
-        public DateTime Timestamp;
+        public DateTime? Timestamp;
 
         /// <summary>
         /// Embed color
         /// </summary>
-        public Color Color;
+        public Color? Color;
 
         /// <summary>
         /// Embed footer
         /// </summary>
-        public EmbedFooter Footer;
+        public EmbedFooter? Footer;
 
         /// <summary>
         /// Embed image
         /// </summary>
-        public EmbedMedia Image;
+        public EmbedMedia? Image;
 
         /// <summary>
         /// Embed thumbnail
         /// </summary>
-        public EmbedMedia Thumbnail;
+        public EmbedMedia? Thumbnail;
 
         /// <summary>
         /// Embed video
         /// </summary>
-        public EmbedMedia Video;
+        public EmbedMedia? Video;
 
         /// <summary>
         /// Embed provider
         /// </summary>
-        public EmbedProvider Provider;
+        public EmbedProvider? Provider;
 
         /// <summary>
         /// Embed author
         /// </summary>
-        public EmbedAuthor Author;
+        public EmbedAuthor? Author;
 
         /// <summary>
         /// Embed fields array
@@ -147,12 +147,12 @@ namespace Discord
         /// <summary>
         /// Media height
         /// </summary>
-        public int Height;
+        public int? Height;
 
         /// <summary>
         /// Media width
         /// </summary>
-        public int Width;
+        public int? Width;
 
         public override string ToString() => Utils.StructToJson(this).ToString(Formatting.None);
     }
