@@ -35,12 +35,13 @@ embed.Provider = new EmbedProvider() {Name="Provider Name", Url="Provider Url"};
 embed.Author = new EmbedAuthor() {Name="Author Name", Url="Author Url", IconUrl="http://url-of-image"};
 
 //fields
-embed.Fields = new[]{ 
-  new EmbedField() {Name="Field Name", Value="Field Value", InLine=true },
-  new EmbedField() {Name="Field Name 2", Value="Field Value 2", InLine=true }};
+embed.Fields = new List<EmbedField>();
+embed.Fields.Add(new EmbedField() {Name="Field Name", Value="Field Value", InLine=true });
+embed.Fields.Add(new EmbedField() {Name="Field Name 2", Value="Field Value 2", InLine=true });
 
 //set embed
-message.Embeds = new[]{embed};
+message.Embeds = new List<DiscordEmbed>();
+message.Embeds.Add(embed);
 ```
 
 > Sending message
