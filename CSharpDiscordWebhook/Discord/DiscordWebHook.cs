@@ -17,6 +17,9 @@ namespace Discord.Webhook
         /// </summary>
         public void Send(DiscordMessage message, FileInfo file = null)
         {
+            if (string.IsNullOrEmpty(Url))
+                throw new ArgumentNullException("Invalid Webhook URL.");
+
             string bound = "------------------------" + DateTime.Now.Ticks.ToString("x");
             WebClient webhookRequest = new WebClient();
             webhookRequest.Headers.Add("Content-Type", "multipart/form-data; boundary=" + bound);

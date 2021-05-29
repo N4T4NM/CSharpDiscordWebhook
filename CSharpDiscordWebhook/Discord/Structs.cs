@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace Discord
@@ -31,9 +32,9 @@ namespace Discord
         public string AvatarUrl;
 
         /// <summary>
-        /// Array of embeds
+        /// List of embeds
         /// </summary>
-        public DiscordEmbed[] Embeds;
+        public List<DiscordEmbed> Embeds;
 
         public override string ToString() => Utils.StructToJson(this).ToString(Formatting.None);
     }
@@ -99,9 +100,9 @@ namespace Discord
         public EmbedAuthor? Author;
 
         /// <summary>
-        /// Embed fields array
+        /// Embed fields list
         /// </summary>
-        public EmbedField[] Fields;
+        public List<EmbedField> Fields;
 
         public override string ToString() => Utils.StructToJson(this).ToString(Formatting.None);
     }

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -52,10 +53,10 @@ namespace Discord
                     json.Add(name, value as string);
                 else if (value is DateTime)
                     json.Add(name, ((DateTime)value).ToString("yyyy-MM-ddTHH\\:mm\\:ss.fffffffzzz"));
-                else if (value is Array)
+                else if (value is IList && value.GetType().IsGenericType)
                 {
                     JArray array = new JArray();
-                    foreach (object obj in value as Array)
+                    foreach (object obj in value as IList)
                         array.Add(StructToJson(obj));
                     json.Add(name, array);
                 }
