@@ -1,7 +1,7 @@
 # CSharpDiscordWebhook
 Simple C# written code to send messages embeds and files using discord webhooks
 
-***You need to add [NewtonSoft.Json](https://www.newtonsoft.com/json) to references.***<br><br>
+***If you are using the .NET Framework version, you need to add [NewtonSoft.Json](https://www.newtonsoft.com/json) to references.***<br><br>
 **Code usage**
 > Importing webhook code
 ```CSharp
