@@ -94,7 +94,6 @@ namespace WebhookTest
 
             Discord.DiscordMessage msg = new Discord.DiscordMessage();
             msg.AvatarUrl = "InvalidAvatarUrl";
-            msg.Embeds = new List<Discord.DiscordEmbed>();
             msg.Embeds.Add(new Discord.DiscordEmbed() { Url = "InvalidEmbedUrl", Image=new Discord.EmbedMedia() { Url = "Invalid image url" } });
             try
             {
