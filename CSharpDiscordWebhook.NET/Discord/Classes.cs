@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text.Json.Serialization;
-namespace CSharpDiscordWebhook.NET.Discord
+namespace Discord.NET
 {
     public class DiscordMessage
     {
+        public DiscordMessage()
+        {
+            Embeds = new List<DiscordEmbed>();
+        }
+
         [JsonPropertyName("content")]
         /// <summary>
         /// Message content
@@ -39,6 +44,11 @@ namespace CSharpDiscordWebhook.NET.Discord
 
     public class DiscordEmbed
     {
+        public DiscordEmbed()
+        {
+            Fields = new List<EmbedField>();
+        }
+
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("title")]
         /// <summary>

@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Text.Json;
 
-namespace CSharpDiscordWebhook.NET.Discord
+namespace Discord.NET.Webhook
 {
     public class DiscordWebhook
     {

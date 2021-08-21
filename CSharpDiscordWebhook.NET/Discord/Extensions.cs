@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace CSharpDiscordWebhook.NET.Discord
+namespace Discord.NET
 {
     public static class Extensions
     {
