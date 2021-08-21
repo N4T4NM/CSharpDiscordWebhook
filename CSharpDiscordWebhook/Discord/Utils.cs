@@ -3,18 +3,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
 namespace Discord
 {
-    public class Utils
+    public static class Utils
     {
-        private Utils()
-        {
-
-        }
-
         /// <summary>
         /// Convert Color object into hex integer
         /// </summary>
@@ -97,6 +93,12 @@ namespace Discord
                 }
             }
             return upper;
+        }
+
+        public static string Decode(Stream source)
+        {
+            using (StreamReader reader = new StreamReader(source))
+                return reader.ReadToEnd();
         }
     }
 }
