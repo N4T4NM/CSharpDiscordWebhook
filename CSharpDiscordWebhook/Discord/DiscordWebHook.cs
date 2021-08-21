@@ -48,7 +48,17 @@ namespace Discord.Webhook
             });
             byte[] jsonBodyBuffer = Encoding.UTF8.GetBytes(jsonBody);
             stream.Write(jsonBodyBuffer, 0, jsonBodyBuffer.Length);
-            webhookRequest.UploadData(this.Url, stream.ToArray());
+
+            try
+            {
+                webhookRequest.UploadData(this.Url, stream.ToArray());
+            }
+            catch (WebException ex)
+            {
+                throw new WebException(Utils.Decode(ex.Response.GetResponseStream()));
+            }
+
+            stream.Dispose();
         }
     }
 }
