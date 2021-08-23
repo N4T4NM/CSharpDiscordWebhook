@@ -12,6 +12,8 @@ namespace WebhookTest
             Console.Write("Webhook URL > ");
             string url = Console.ReadLine();
 
+#if DEBUGDNF || DEBUGFULL
+            Console.WriteLine("Debugging DotNetFramwork...");
             var dnf = new DotNetFramework(url);
             dnf.TestMessage();
             dnf.TestFile();
@@ -20,8 +22,11 @@ namespace WebhookTest
 
             Console.WriteLine("\n\nPress any key to continue...");
             Console.ReadKey();
+#endif
 
+#if DEBUGDN || DEBUGFULL
             Console.Clear();
+            Console.WriteLine("Debugging DotNet...");
             var dn = new DotNet(url);
             dn.TestMessage();
             dn.TestFile();
@@ -30,6 +35,7 @@ namespace WebhookTest
 
             Console.WriteLine("\n\nFinished. Press any key to exit...");
             Console.ReadKey();
+#endif
             Environment.Exit(0);
         }
     }
@@ -94,6 +100,7 @@ namespace WebhookTest
 
             Discord.DiscordMessage msg = new Discord.DiscordMessage();
             msg.AvatarUrl = "InvalidAvatarUrl";
+            msg.Embeds = new List<Discord.DiscordEmbed>();
             msg.Embeds.Add(new Discord.DiscordEmbed() { Url = "InvalidEmbedUrl", Image=new Discord.EmbedMedia() { Url = "Invalid image url" } });
             try
             {
@@ -123,21 +130,17 @@ namespace WebhookTest
         }
         public void TestFile()
         {
-            Console.Write("Test File > ");
-            var file = Console.ReadLine();
+            Console.Write("Test Files > ");
+            var files = Console.ReadLine();
+            List<FileInfo> fInfos = new List<FileInfo>();
+            foreach(string fl in files.Split(';'))
+                fInfos.Add(new FileInfo(fl));
 
-            if (string.IsNullOrEmpty(file) || !File.Exists(file))
-            {
-                Console.WriteLine("Jumping file test.");
-                return;
-            }
-            FileInfo fInfo = new FileInfo(file);
-
-            Console.WriteLine("Testing file...");
+            Console.WriteLine("Testing files...");
             Discord.NET.DiscordMessage msg = new Discord.NET.DiscordMessage();
             msg.Content = "File Test";
 
-            wb.Send(msg, fInfo);
+            wb.Send(msg, fInfos.ToArray());
         }
 
         public void TestEmbed()

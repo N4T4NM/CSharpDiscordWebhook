@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace Discord
 {
@@ -100,5 +101,8 @@ namespace Discord
             using (StreamReader reader = new StreamReader(source))
                 return reader.ReadToEnd();
         }
+
+        public static byte[] Encode(string source, string encoding = "utf-8")
+            => Encoding.GetEncoding(encoding).GetBytes(source);
     }
 }
