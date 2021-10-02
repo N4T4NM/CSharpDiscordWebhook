@@ -1,6 +1,8 @@
 # CSharpDiscordWebhook
 Simple C# written code to send messages embeds and files using discord webhooks
 
+[![Patreon](https://badgen.net/badge/icon/patreon?icon=patreon&label=Support)](https://patreon.com/natanm)
+
 ***If you are using the .NET Framework version, you need to add [NewtonSoft.Json](https://www.newtonsoft.com/json) to references.***<br><br>
 **Code usage**
 > Importing webhook code
