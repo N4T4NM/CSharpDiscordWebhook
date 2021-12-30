@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
+using CSharpDiscordWebhook.NET.Discord;
 
 namespace WebhookTest
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             Console.Write("Webhook URL > ");
             string url = Console.ReadLine();
@@ -28,10 +30,10 @@ namespace WebhookTest
             Console.Clear();
             Console.WriteLine("Debugging DotNet...");
             var dn = new DotNet(url);
-            dn.TestMessage();
-            dn.TestFile();
-            dn.TestEmbed();
-            dn.TestError();
+            await dn.TestMessageAsync();
+            await dn.TestFileAsync();
+            await dn.TestEmbedAsync();
+            await dn.TestErrorAsync();
 
             Console.WriteLine("\n\nFinished. Press any key to exit...");
             Console.ReadKey();
@@ -114,21 +116,24 @@ namespace WebhookTest
     }
     class DotNet
     {
-        Discord.NET.Webhook.DiscordWebhook wb = new Discord.NET.Webhook.DiscordWebhook();
+        private DiscordWebhook wb;
         public DotNet(string url)
         {
-            wb.Url = url;
+            wb = new DiscordWebhook
+            {
+                Uri = new Uri(url)
+            };
         }
 
-        public void TestMessage()
+        public async Task TestMessageAsync()
         {
             Console.WriteLine("Testing message...");
 
-            Discord.NET.DiscordMessage msg = new Discord.NET.DiscordMessage();
+            DiscordMessage msg = new DiscordMessage();
             msg.Content = "Message Test";
-            wb.Send(msg);
+            await wb.SendAsync(msg);
         }
-        public void TestFile()
+        public async Task TestFileAsync()
         {
             Console.Write("Test Files > ");
             var files = Console.ReadLine();
@@ -137,42 +142,42 @@ namespace WebhookTest
                 fInfos.Add(new FileInfo(fl));
 
             Console.WriteLine("Testing files...");
-            Discord.NET.DiscordMessage msg = new Discord.NET.DiscordMessage();
+            DiscordMessage msg = new DiscordMessage();
             msg.Content = "File Test";
 
-            wb.Send(msg, fInfos.ToArray());
+            await wb.SendAsync(msg, fInfos.ToArray());
         }
 
-        public void TestEmbed()
+        public async Task TestEmbedAsync()
         {
             Console.WriteLine("Testing embeds...");
-            Discord.NET.DiscordMessage msg = new Discord.NET.DiscordMessage();
-            msg.Embeds.Add(new Discord.NET.DiscordEmbed()
+            DiscordMessage msg = new DiscordMessage();
+            msg.Embeds.Add(new DiscordEmbed()
             {
-                Author = new Discord.NET.EmbedAuthor() { Name = "NatanM" },
+                Author = new EmbedAuthor() { Name = "NatanM" },
                 Color = System.Drawing.Color.Red,
-                Footer = new Discord.NET.EmbedFooter() { Text = "Footer Test" },
-                Fields = new List<Discord.NET.EmbedField>() { new Discord.NET.EmbedField() { Name = "Name", Value = "Value" } },
+                Footer = new EmbedFooter() { Text = "Footer Test" },
+                Fields = new List<EmbedField>() { new EmbedField() { Name = "Name", Value = "Value" } },
                 Description = "Description",
                 Title = "Title"
             });
 
-            wb.Send(msg);
+            await wb.SendAsync(msg);
         }
 
-        public void TestError()
+        public async Task TestErrorAsync()
         {
             Console.WriteLine("Testing error...");
 
-            Discord.NET.DiscordMessage msg = new Discord.NET.DiscordMessage();
+            DiscordMessage msg = new DiscordMessage();
             msg.AvatarUrl = "InvalidAvatarUrl";
-            msg.Embeds.Add(new Discord.NET.DiscordEmbed() { Url = "InvalidEmbedUrl", Image = new Discord.NET.EmbedMedia() { Url = "Invalid image url" } });
+            msg.Embeds.Add(new DiscordEmbed() { Url = "InvalidEmbedUrl", Image = new EmbedMedia() { Url = "Invalid image url" } });
             try
             {
-                wb.Send(msg);
-                throw new InvalidOperationException("Expected web exception !!");
+                await wb.SendAsync(msg);
+                throw new InvalidOperationException("Expected discord exception !!");
             }
-            catch (WebException ex)
+            catch (DiscordException ex)
             {
                 Console.WriteLine($"Server response: {ex.Message}");
             }

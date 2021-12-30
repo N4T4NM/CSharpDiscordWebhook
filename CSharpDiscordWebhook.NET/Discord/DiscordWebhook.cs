@@ -1,71 +1,45 @@
 ﻿using System;
 using System.IO;
-using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text.Json;
+using System.Threading.Tasks;
 
-namespace Discord.NET.Webhook
+namespace CSharpDiscordWebhook.NET.Discord;
+
+public class DiscordWebhook
 {
-    public class DiscordWebhook
+    /// <summary>
+    /// Webhook url
+    /// </summary>
+    public Uri Uri { get; init; }
+    
+    /// <summary>
+    /// Send webhook message
+    /// </summary>
+    public async Task SendAsync(DiscordMessage message, params FileInfo[] files)
     {
-        /// <summary>
-        /// Webhook url
-        /// </summary>
-        public string Url { get; set; }
+        using var httpClient = new HttpClient();
 
-        private void AddField(MemoryStream stream, string bound, string cDisposition, string cType, byte[] data)
+        string bound = "------------------------" + DateTime.Now.Ticks.ToString("x");
+
+        var httpContent = new MultipartFormDataContent(bound);
+
+        foreach (var file in files)
         {
-            string prefix = stream.Length > 0 ? "\r\n--" : "--";
-            string fBegin = $"{prefix}{bound}\r\n";
-
-            stream.Write(fBegin);
-            stream.Write(cDisposition);
-            stream.Write(cType);
-            stream.Write(data);
+            var fileContent = new ByteArrayContent(await File.ReadAllBytesAsync(file.FullName));
+            fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/octet-stream");
+            httpContent.Add(fileContent, file.Name, file.Name);
         }
 
-        private void SetJsonPayload(MemoryStream stream, string bound, string json)
+        var jsonContent = new StringContent(JsonSerializer.Serialize(message));
+        jsonContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
+        httpContent.Add(jsonContent, "payload_json");
+        
+        var response = await httpClient.PostAsync(Uri, httpContent);
+        if (!response.IsSuccessStatusCode)
         {
-            string cDisposition = "Content-Disposition: form-data; name=\"payload_json\"\r\n";
-            string cType = "Content-Type: application/octet-stream\r\n\r\n";
-            AddField(stream, bound, cDisposition, cType, json.Encode());
-        }
-
-        private void SetFile(MemoryStream stream, string bound, int index, FileInfo file)
-        {
-            string cDisposition = $"Content-Disposition: form-data; name=\"file_{index}\"; filename=\"{file.Name}\"\r\n";
-            string cType = "Content-Type: application/octet-stream\r\n\r\n";
-            AddField(stream, bound, cDisposition, cType, File.ReadAllBytes(file.FullName));
-        }
-
-        /// <summary>
-        /// Send webhook message
-        /// </summary>
-        public void Send(DiscordMessage message, params FileInfo[] files)
-        {
-            if (string.IsNullOrEmpty(Url))
-                throw new ArgumentNullException("Invalid Webhook URL.");
-
-            string bound = "------------------------" + DateTime.Now.Ticks.ToString("x");
-
-            WebClient webhook = new WebClient();
-            webhook.Headers.Add("Content-Type", "multipart/form-data; boundary=" + bound);
-
-            MemoryStream stream = new MemoryStream();
-            for(int i=0; i < files.Length; i++)
-                SetFile(stream, bound, i, files[i]);
-
-            string json = JsonSerializer.Serialize(message);
-            SetJsonPayload(stream, bound, json);
-            stream.Write($"\r\n--{bound}--");
-
-            try
-            {
-                webhook.UploadData(Url, stream.ToArray());
-            } catch(WebException ex)
-            {
-                throw new WebException(ex.Response.GetResponseStream().Decode());
-            }
-            stream.Dispose();
+            throw new DiscordException(await response.Content.ReadAsStringAsync());
         }
     }
 }
