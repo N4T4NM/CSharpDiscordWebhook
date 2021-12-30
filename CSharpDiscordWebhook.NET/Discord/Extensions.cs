@@ -1,23 +1,11 @@
 ﻿using System.Drawing;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CSharpDiscordWebhook.NET.Discord;
 
 public static class Extensions
 {
-    public static byte[] Encode(this string source)
-        => Encoding.UTF8.GetBytes(source);
-    public static string Decode(this byte[] source)
-        => Encoding.UTF8.GetString(source);
-
-    public static async Task WriteAsync(this MemoryStream source, string str)
-    {
-        byte[] buffer = str.Encode();
-        await source.WriteAsync(buffer);
-    }
-
     public static int? ToHex(this Color? color)
     {
         string HS =
