@@ -34,6 +34,7 @@ namespace WebhookTest
             await dn.TestFileAsync();
             await dn.TestEmbedAsync();
             await dn.TestErrorAsync();
+            await dn.TestAllowedMentionsAsync();
 
             Console.WriteLine("\n\nFinished. Press any key to exit...");
             Console.ReadKey();
@@ -181,6 +182,16 @@ namespace WebhookTest
             {
                 Console.WriteLine($"Server response: {ex.Message}");
             }
+        }
+
+        public async Task TestAllowedMentionsAsync()
+        {
+            Console.WriteLine("Testing allowed mentions...");
+            
+            DiscordMessage msg = new DiscordMessage();
+            msg.Content = "This should not notify @everyone";
+            msg.AllowedMentions = new AllowedMentions();
+            await wb.SendAsync(msg);
         }
     }
 }
