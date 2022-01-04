@@ -292,11 +292,11 @@ public class AllowedMentions
     /// <summary>
     /// List of role_ids to mention
     /// </summary>
-    public List<string> Roles { get; set; }
+    public List<ulong> Roles { get; set; }
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     [JsonPropertyName("users")]
     /// <summary>
     /// List of user_ids to mention
     /// </summary>
-    public List<string> Users { get; set; }
+    public List<ulong> Users { get; set; }
 }
