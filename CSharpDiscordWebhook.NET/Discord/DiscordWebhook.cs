@@ -12,7 +12,7 @@ public class DiscordWebhook
     /// <summary>
     /// Webhook url
     /// </summary>
-    public Uri Uri { get; init; }
+    public Uri Uri { get; set; }
     
     /// <summary>
     /// Send webhook message
