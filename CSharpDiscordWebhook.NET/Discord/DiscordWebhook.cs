@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSharpDiscordWebhook.NET.Discord.Json;
+using System;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -19,27 +20,37 @@ public class DiscordWebhook
     /// </summary>
     public async Task SendAsync(DiscordMessage message, params FileInfo[] files)
     {
-        using var httpClient = new HttpClient();
+        using HttpClient httpClient = new HttpClient();
 
         string bound = "------------------------" + DateTime.Now.Ticks.ToString("x");
 
-        var httpContent = new MultipartFormDataContent(bound);
+        MultipartFormDataContent httpContent = new MultipartFormDataContent(bound);
 
         foreach (var file in files)
         {
-            var fileContent = new ByteArrayContent(await File.ReadAllBytesAsync(file.FullName));
+            ByteArrayContent fileContent = new ByteArrayContent(await File.ReadAllBytesAsync(file.FullName));
             fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/octet-stream");
             httpContent.Add(fileContent, file.Name, file.Name);
         }
 
-        var jsonContent = new StringContent(JsonSerializer.Serialize(message));
+        StringContent jsonContent = new StringContent(JsonSerializer.Serialize(message, JSON_SETTINGS));
         jsonContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
         httpContent.Add(jsonContent, "payload_json");
         
-        var response = await httpClient.PostAsync(Uri, httpContent);
+        HttpResponseMessage response = await httpClient.PostAsync(Uri, httpContent);
         if (!response.IsSuccessStatusCode)
-        {
-            throw new DiscordException(await response.Content.ReadAsStringAsync());
-        }
+            throw new Exception(await response.Content.ReadAsStringAsync());
     }
+
+    private static readonly JsonSerializerOptions JSON_SETTINGS = new()
+    {
+        PropertyNamingPolicy = new DiscordJsonNaming(),
+        IgnoreReadOnlyProperties = false,
+        DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+        Converters =
+        {
+            new DiscordColorConverter(),
+            new DiscordTimestampConverter()
+        }
+    };
 }
