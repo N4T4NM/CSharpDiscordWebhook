@@ -1,0 +1,26 @@
+name: Publish package to NuGet
+
+on:
+  release:
+    types: [published]
+    tags: 
+    - DotNet*
+    
+jobs:
+  pack-publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET 6
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.*
+        
+    - name: Generate package
+      run: dotnet pack ./CSharpDiscordWebhook.NET/CSharpDiscordWebhook.NET.csproj -c Release -o CSharpDiscordWebhook.NET_Package
+      
+    - name: Upload
+      run: |
+        cd CSharpDiscordWebhook.NET_Package
+        dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
