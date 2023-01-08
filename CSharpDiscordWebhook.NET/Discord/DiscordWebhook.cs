@@ -14,7 +14,7 @@ public class DiscordWebhook
     /// Webhook url
     /// </summary>
     public Uri Uri { get; set; }
-    
+
     /// <summary>
     /// Send webhook message
     /// </summary>
@@ -36,7 +36,7 @@ public class DiscordWebhook
         StringContent jsonContent = new StringContent(JsonSerializer.Serialize(message, JSON_SETTINGS));
         jsonContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
         httpContent.Add(jsonContent, "payload_json");
-        
+
         HttpResponseMessage response = await httpClient.PostAsync(Uri, httpContent);
         if (!response.IsSuccessStatusCode)
             throw new Exception(await response.Content.ReadAsStringAsync());
@@ -50,7 +50,8 @@ public class DiscordWebhook
         Converters =
         {
             new DiscordColorConverter(),
-            new DiscordTimestampConverter()
+            new DiscordTimestampConverter(),
+            new AllowedMentionTypeConverter()
         }
     };
 }

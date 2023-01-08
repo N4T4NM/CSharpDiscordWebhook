@@ -7,17 +7,17 @@ namespace CSharpDiscordWebhook.NET.Discord
         /// <summary>
         /// An array of allowed mention types to parse from the content.
         /// </summary>
-        public List<AllowedMentionType> Parse { get; } = new();
+        public List<AllowedMentionType> Parse { get; set; } = new();
 
         /// <summary>
         /// Array of role_ids to mention (Max size of 100)
         /// </summary>
-        public List<ulong> Roles { get; } = new();
+        public List<ulong> Roles { get; set; } = new();
 
         /// <summary>
         /// Array of user_ids to mention (Max size of 100)
         /// </summary>
-        public List<ulong> Users { get; } = new();
+        public List<ulong> Users { get; set; } = new();
 
         /// <summary>
         /// For replies, whether to mention the author of the message being replied to (default false)
