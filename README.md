@@ -2,6 +2,7 @@
 Simple C# written code to send messages embeds and files using discord webhooks
 
 [![Patreon](https://badgen.net/badge/icon/patreon?icon=patreon&label=Support)](https://patreon.com/natanm)
+[![NuGet](https://badgen.net/badge/icon/nuget?icon=nuget&label=Package)](https://www.nuget.org/packages/CSharpDiscordWebhook.NET/)
 
 ***If you are using the .NET Framework version, you need to add [NewtonSoft.Json](https://www.newtonsoft.com/json) to references.***<br><br>
 
@@ -28,13 +29,13 @@ message.AvatarUrl = "http://url-of-image";
 DiscordEmbed embed = new DiscordEmbed();
 embed.Title = "Embed title";
 embed.Description = "Embed description";
-embed.Url = "Embed Url";
-embed.Timestamp = DateTime.Now;
-embed.Color = Color.Red; //alpha will be ignored, you can use any RGB color
-embed.Footer = new EmbedFooter() {Text="Footer Text", IconUrl="http://url-of-image"};
-embed.Image = new EmbedMedia() {Url="Media URL", Width=150, Height=150}; //valid for thumb and video
-embed.Provider = new EmbedProvider() {Name="Provider Name", Url="Provider Url"};
-embed.Author = new EmbedAuthor() {Name="Author Name", Url="Author Url", IconUrl="http://url-of-image"};
+embed.Url = new Uri("Embed Url");
+embed.Timestamp = new DiscordTimestamp(DateTime.Now);
+embed.Color = new DiscordColor(Color.Red); //alpha will be ignored, you can use any RGB color
+embed.Footer = new EmbedFooter() {Text="Footer Text", IconUrl = new Uri("http://url-of-image")};
+embed.Image = new EmbedMedia() {Url= new Uri("Media URL"), Width=150, Height=150}; //valid for thumb and video
+embed.Provider = new EmbedProvider() {Name="Provider Name", Url=new Uri("Provider Url") };
+embed.Author = new EmbedAuthor() {Name="Author Name", Url= new Uri("Author Url"), IconUrl=new Uri("http://url-of-image")};
 
 //fields
 embed.Fields = new List<EmbedField>();
@@ -46,12 +47,11 @@ message.Embeds = new List<DiscordEmbed>();
 message.Embeds.Add(embed);
 
 //Allowed mentions
-message.AllowedMentions = new AllowedMentions(); //Default -> None
+message.AllowedMentions = new AllowedMentions();
 
-message.AllowedMentions.Parse = new List<string>();
-message.AllowedMentions.Parse.Add("roles"); //Allow role mentions
-message.AllowedMentions.Parse.Add("users"); //Allow user mentions
-message.AllowedMentions.Parse.Add("everyone"); //Allow @everyone mentions]
+message.AllowedMentions.Parse.Add(AllowedMentionType.Role); //Allow role mentions
+message.AllowedMentions.Parse.Add(AllowedMentionType.User); //Allow user mentions
+message.AllowedMentions.Parse.Add(AllowedMentionType.Everyone); //Allow @everyone mentions]
 
 message.AllowedMentions.Roles = new List<ulong>();
 message.AllowedMentions.Roles.Add(000000000000000000); //Allow mention the role with this id
